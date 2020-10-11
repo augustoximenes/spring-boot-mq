@@ -3,13 +3,12 @@ package dev.augustoximenes.springbootmq.producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.event.EventListener;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.jms.JMSException;
-import java.util.Date;
+import java.util.UUID;
 
 @SpringBootApplication
 @EnableJms
@@ -25,9 +24,10 @@ public class ProducerApplication {
 	@PostConstruct
 	void send() throws JMSException, InterruptedException {
 		while(true) {
-			for(int i = 0; i < 10; i++) {
-				System.out.println(i);
-				jmsTemplate.convertAndSend("dev/", new Date().toString());
+			for(int i = 0; i < 5; i++) {
+				String uuid = UUID.randomUUID().toString();
+				System.out.println(uuid);
+				jmsTemplate.convertAndSend("dev/", uuid);
 			}
 
 			Thread.sleep(3000);

@@ -23,7 +23,11 @@ public class LoggerApplication {
 	public void onMessage(Message message) throws JMSException {
 		TextMessage textMessage = (TextMessage) message;
 		String textMessageBody = textMessage.getText();
-		log.info("[Message] " + textMessageBody);
+
+		log.info(message.getJMSDestination() + "|" +
+				message.getJMSCorrelationID() + "|" +
+				message.getJMSTimestamp() + "|" +
+				textMessageBody);
 	}
 
 }

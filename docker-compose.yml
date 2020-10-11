@@ -65,3 +65,12 @@ services:
     restart: always
     depends_on:
       - spring-producer
+
+  # mvn clean package -DskipTests
+  # docker build . -t spring-boot-mq-logger/logger
+  spring-logger:
+    image: spring-boot-mq-logger/logger:latest
+    hostname: spring-logger
+    restart: always
+    depends_on:
+      - spring-producer
