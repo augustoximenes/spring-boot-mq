@@ -1,0 +1,30 @@
+version: '2'
+services:
+  mq:
+    image: store/ibmcorp/mqadvanced-server-dev:9.1.0.0
+    hostname: mq
+    container_name: mq
+    environment:
+      LICENSE: accept
+      MQ_QMGR_NAME: QM1
+    ports:
+      - 1414:1414
+      - 9443:9443
+
+  # mvn clean package -DskipTests
+  # docker build . -t spring-boot-mq-producer/producer
+  spring-producer:
+    image: spring-boot-mq-producer/producer:latest
+    hostname: spring-producer
+    restart: always
+    depends_on:
+      - mq
+
+  # mvn clean package -DskipTests
+  # docker build . -t spring-boot-mq-consumer/consumer
+  spring-consumer:
+    image: spring-boot-mq-consumer/consumer:latest
+    hostname: spring-consumer
+    restart: always
+    depends_on:
+      - spring-producer
