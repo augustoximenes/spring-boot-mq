@@ -27,7 +27,12 @@ public class ProducerApplication {
 			for(int i = 0; i < 5; i++) {
 				String uuid = UUID.randomUUID().toString();
 				System.out.println(uuid);
-				jmsTemplate.convertAndSend("dev/", uuid);
+				//jmsTemplate.convertAndSend("dev/", uuid);
+				jmsTemplate.send("dev/", s -> {
+					TextMessage textMessage = s.createTextMessage(uuid);
+					textMessage.setJMSCorrelationID(uuid);
+					return textMessage;
+				});
 			}
 
 			Thread.sleep(3000);
